@@ -7,21 +7,35 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDistance(t *testing.T) {
-	var test = struct {
-		input    string
-		expected int
-	}{
-		input: `3   4
+var test = struct {
+	input      string
+	distance   int
+	similarity int
+}{
+	input: `3   4
 4   3
 2   5
 1   3
 3   9
 3   3`,
-		expected: 11,
-	}
+	distance:   11,
+	similarity: 31,
+}
 
-	actual, err := distance(strings.NewReader(test.input))
+func TestDistance(t *testing.T) {
+	list1, list2, err := parse(strings.NewReader(test.input))
 	assert.Nil(t, err)
-	assert.Equal(t, test.expected, actual)
+
+	actual, err := distance(list1, list2)
+	assert.Nil(t, err)
+	assert.Equal(t, test.distance, actual)
+}
+
+func TestSimilarity(t *testing.T) {
+	list1, list2, err := parse(strings.NewReader(test.input))
+	assert.Nil(t, err)
+
+	actual, err := similarity(list1, list2)
+	assert.Nil(t, err)
+	assert.Equal(t, test.similarity, actual)
 }
